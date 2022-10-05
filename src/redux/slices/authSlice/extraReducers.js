@@ -19,6 +19,8 @@ export const fetchRegister = createAsyncThunk('auth/fetchRegister', async (param
 
 
 
+
+
 export const extraReducers = {
    [fetchAuth.pending]: (state) => {
       state.data = null
