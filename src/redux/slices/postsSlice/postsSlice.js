@@ -22,7 +22,7 @@ const postsSlice = createSlice({
    reducers: {
 
    },
-   extraReducers: extraReducers()
+   extraReducers: extraReducers
 })
 
 export const postsReducer = postsSlice.reducer

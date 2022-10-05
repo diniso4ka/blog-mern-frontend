@@ -9,19 +9,21 @@ import { TagsBlock } from '../../components/TagsBlock';
 import { CommentsBlock } from '../../components/CommentsBlock';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts } from '../../redux/slices/postsSlice/extraReducers';
+import { fetchPosts, fetchTags } from '../../redux/slices/postsSlice/extraReducers';
 
 export const Home = () => {
   const dispatch = useDispatch()
   const { posts, tags } = useSelector(state => state.posts)
 
   const isPostsLoading = posts.status === 'loading'
+  const isTagsLoading = tags.status === 'loading'
 
   React.useEffect(() => {
     dispatch(fetchPosts())
+    dispatch(fetchTags())
   }, [])
 
-  console.log(posts);
+
 
   return (
     <>
@@ -40,7 +42,7 @@ export const Home = () => {
             ) : (
               <Post
                 key={obj._id}
-                id={obj._id}
+                _id={obj._id}
                 title={obj.title}
                 imageUrl={obj.imgUrl ? obj.imgUrl : "https://res.cloudinary.com/practicaldev/image/fetch/s--UnAfrEG8--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/icohm5g0axh9wjmu4oc3.png"}
                 user={{
@@ -58,7 +60,7 @@ export const Home = () => {
           )}
         </Grid>
         <Grid xs={4} item>
-          <TagsBlock items={['react', 'typescript', 'заметки']} isLoading={false} />
+          <TagsBlock items={tags.items} isLoading={isTagsLoading} />
           <CommentsBlock
             items={[
               {
