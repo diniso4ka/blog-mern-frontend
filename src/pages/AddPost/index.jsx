@@ -6,19 +6,61 @@ import SimpleMDE from 'react-simplemde-editor';
 
 import 'easymde/dist/easymde.min.css';
 import styles from './AddPost.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from '../../utils/axios';
 
 export const AddPost = () => {
-  const imageUrl = '';
-  const [value, setValue] = React.useState('');
+  const navigate = useNavigate()
+  const [text, setText] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const [title, setTitle] = React.useState('');
+  const [tags, setTags] = React.useState('');
+  const [imgUrl, setImgUrl] = React.useState('');
+  const importFileRef = React.useRef(null)
 
-  const handleChangeFile = () => { };
+  const handleChangeFile = async (event) => {
+    try {
+      const formData = new FormData()
+      const file = event.target.files[0]
+      formData.append('image', file)
+      const { data } = await axios.post('/upload', formData)
+      console.log(data.url)
+      setImgUrl(data.url)
+    } catch (err) {
+      console.log(err)
+    }
+  };
 
-  const onClickRemoveImage = () => { };
+  const onClickRemoveImage = async (event) => {
+    setImgUrl('')
+  };
 
-  const onChange = React.useCallback((value) => {
-    setValue(value);
+  const onChange = React.useCallback((text) => {
+    setText(text);
   }, []);
+
+  const onSubmit = async () => {
+    try {
+      setLoading(true)
+
+      const fields = {
+        title,
+        imgUrl,
+        tags: tags.split(','),
+        text
+      }
+      console.log(fields)
+      const { data } = await axios.post('/posts', fields)
+      console.log(data)
+      const id = data._id
+
+      navigate(`/posts/${id}`)
+
+    } catch (err) {
+      console.log(err)
+      alert('Ошибка при создании статьи')
+    }
+  }
 
   const options = React.useMemo(
     () => ({
@@ -37,18 +79,19 @@ export const AddPost = () => {
 
   return (
     <Paper style={{ padding: 30 }}>
-      <Button variant="outlined" size="large">
+      <Button onClick={() => importFileRef.current.click()} variant="outlined" size="large">
         Загрузить превью
       </Button>
-      <input type="file" onChange={handleChangeFile} hidden />
-      {imageUrl && (
-        <Button variant="contained" color="error" onClick={onClickRemoveImage}>
-          Удалить
-        </Button>
+      <input ref={importFileRef} type="file" onChange={handleChangeFile} hidden />
+      {imgUrl && (
+        <>
+          <Button variant="contained" color="error" onClick={onClickRemoveImage}>
+            Удалить
+          </Button>
+          <img className={styles.image} src={`http://localhost:3333${imgUrl}`} alt="Uploaded" />
+        </>
       )}
-      {imageUrl && (
-        <img className={styles.image} src={`http://localhost:4444${imageUrl}`} alt="Uploaded" />
-      )}
+
       <br />
       <br />
       <TextField
@@ -56,11 +99,20 @@ export const AddPost = () => {
         variant="standard"
         placeholder="Заголовок статьи..."
         fullWidth
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
       />
-      <TextField classes={{ root: styles.tags }} variant="standard" placeholder="Тэги" fullWidth />
-      <SimpleMDE className={styles.editor} value={value} onChange={onChange} options={options} />
+      <TextField
+        classes={{ root: styles.tags }}
+        variant="standard" placeholder="Тэги"
+        fullWidth
+        value={tags}
+        onChange={(e) => setTags(e.target.value)}
+      />
+
+      <SimpleMDE className={styles.editor} value={text} onChange={onChange} options={options} />
       <div className={styles.buttons}>
-        <Button size="large" variant="contained">
+        <Button onClick={onSubmit} size="large" variant="contained">
           Опубликовать
         </Button>
         <Link to="/">
