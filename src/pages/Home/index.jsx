@@ -4,12 +4,12 @@ import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
 
 
-import { Post } from '../components/Post';
-import { TagsBlock } from '../components/TagsBlock';
-import { CommentsBlock } from '../components/CommentsBlock';
+import { Post } from '../../components/Post';
+import { TagsBlock } from '../../components/TagsBlock';
+import { CommentsBlock } from '../../components/CommentsBlock';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts } from '../redux/slices/posts';
+import { fetchPosts } from '../../redux/slices/postsSlice/extraReducers';
 
 export const Home = () => {
   const dispatch = useDispatch()

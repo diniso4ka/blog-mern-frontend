@@ -1,6 +1,6 @@
-import { Login } from '../pages/Login/index';
-import { AddPost } from '../pages/AddPost/index';
-import { Registration } from '../pages/Registration/index';
+import { Login } from '../pages/Login';
+import { AddPost } from '../pages/AddPost';
+import { Registration } from '../pages/Registration';
 import { Home } from '../pages/Home';
 import { FullPost } from '../pages/FullPost';
 
@@ -13,7 +13,7 @@ export const privateRoutes = [
    },
    {
       path: ROUTES.HOME_ROUTE,
-      Component: <Home />
+      Component: Home
    },
    {
       path: ROUTES.FULLPOST_ROUTE,
