@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Header } from "./components";
 import { selectIsAuth } from './redux/slices/authSlice/authSlice';
 import { fetchAuthMe } from './redux/slices/authSlice/extraReducers';
+import { fetchPosts } from './redux/slices/postsSlice/extraReducers';
 import { AppRouter } from './routes/AppRouter';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
 
   React.useEffect(() => {
     dispatch(fetchAuthMe())
+
   }, [])
   return (
     <>
