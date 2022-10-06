@@ -14,23 +14,24 @@ import { fetchPosts, fetchTags } from '../../redux/slices/postsSlice/extraReduce
 export const Home = () => {
   const dispatch = useDispatch()
   const userData = useSelector((state) => state.auth.data)
+  const [sortType, setSortType] = React.useState('createdAt')
   const { posts, tags } = useSelector(state => state.posts)
 
   const isPostsLoading = posts.status === 'loading'
   const isTagsLoading = tags.status === 'loading'
 
   React.useEffect(() => {
-    dispatch(fetchPosts())
+    dispatch(fetchPosts(sortType))
     dispatch(fetchTags())
-  }, [])
+  }, [sortType])
 
 
 
   return (
     <>
-      <Tabs style={{ marginBottom: 15 }} value={0} aria-label="basic tabs example">
-        <Tab label="Новые" />
-        <Tab label="Популярные" />
+      <Tabs style={{ marginBottom: 15 }} value={sortType === 'createdAt' ? 0 : 1} aria-label="basic tabs example">
+        <Tab onClick={() => setSortType('createdAt')} label="Новые" />
+        <Tab onClick={() => setSortType('viewsCount')} label="Популярные" />
       </Tabs>
       <Grid container spacing={4}>
         <Grid xs={8} item>

@@ -12,6 +12,10 @@ export const privateRoutes = [
       Component: AddPost
    },
    {
+      path: ROUTES.EDITPOST_ROUTE,
+      Component: AddPost
+   },
+   {
       path: ROUTES.HOME_ROUTE,
       Component: Home
    },

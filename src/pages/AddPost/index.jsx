@@ -6,10 +6,11 @@ import SimpleMDE from 'react-simplemde-editor';
 
 import 'easymde/dist/easymde.min.css';
 import styles from './AddPost.module.scss';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from '../../utils/axios';
 
 export const AddPost = () => {
+  const { id } = useParams()
   const navigate = useNavigate()
   const [text, setText] = React.useState('');
   const [loading, setLoading] = React.useState(false);
@@ -46,21 +47,34 @@ export const AddPost = () => {
       const fields = {
         title,
         imgUrl,
-        tags: tags.split(','),
+        tags: tags.split(' '),
         text
       }
-      console.log(fields)
-      const { data } = await axios.post('/posts', fields)
-      console.log(data)
-      const id = data._id
 
-      navigate(`/posts/${id}`)
+      const { data } = id ? await axios.patch(`/posts/${id}`, fields) : await axios.post('/posts', fields)
+
+      const _id = id ? id : data._id
+
+      navigate(`/posts/${_id}`)
 
     } catch (err) {
       console.log(err)
       alert('Ошибка при создании статьи')
     }
   }
+
+  React.useEffect(() => {
+    if (id) {
+      const { data } = axios.get(`posts/${id}`).then(({ data }) => {
+        setTitle(data.title)
+        setText(data.text)
+        setImgUrl(data.imgUrl)
+        setTags(data.tags.join(''))
+      }
+      )
+    }
+  }, [])
+
 
   const options = React.useMemo(
     () => ({

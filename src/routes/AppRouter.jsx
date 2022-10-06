@@ -3,18 +3,15 @@ import { Routes, Navigate, Route } from 'react-router-dom'
 import * as ROUTES from '../utils/consts'
 import { privateRoutes, publicRoutes } from './routes'
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectIsAuth } from '../redux/slices/authSlice/authSlice';
-import { fetchAuth } from '../redux/slices/authSlice/extraReducers';
-
 
 
 export const AppRouter = () => {
-   const dispatch = useDispatch()
    const isAuth = useSelector(selectIsAuth)
    const token = window.localStorage.getItem('token')
 
-   if (token) {
+   if (token || isAuth) {
       return (
          <Routes>
             {privateRoutes.map(({ path, Component }) =>
