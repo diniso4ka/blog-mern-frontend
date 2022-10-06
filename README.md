@@ -1,11 +1,10 @@
 <h1>FULLSTACK BLOG</h1> <h2><a href='https://blog-mern-frontend-six.vercel.app'>посмотреть</a></h2>
-Stack:
-<h2>Frontend</h2>
+<h3 style=>Frontend</h3>
 <ul>
   <li>ReactJS</li>
   <li>Reduxtoolkit</li>
   </ul>
-  <h2>Backend</h2>
+  <h3>Backend</h3>
 <ul>
   <li>NodeJs</li>
   <li>MongoDB</li>
