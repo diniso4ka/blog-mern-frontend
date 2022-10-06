@@ -9,10 +9,11 @@ import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import Skeleton from "@mui/material/Skeleton";
 
-export const CommentsBlock = ({ items, children, isLoading = true }) => {
-  React.useEffect(() => {
 
-  }, [])
+export const CommentsBlock = ({ items, children, isLoading = true }) => {
+
+
+
   return (
     <SideBlock title="Комментарии">
       <List>

@@ -8,14 +8,15 @@ import Button from "@mui/material/Button";
 
 import axios from '../../utils/axios';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { Bolt } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectIsAuth } from '../../redux/slices/authSlice/authSlice';
+import { addComment } from '../../redux/slices/postsSlice/postsSlice';
 
 export const Index = () => {
   const isAuth = useSelector(selectIsAuth)
   const token = window.localStorage.getItem('token')
   const userData = useSelector(state => state.auth.data)
+  const dispatch = useDispatch()
   const { id } = useParams()
   const [message, setMessage] = React.useState('')
   const sendMessage = async () => {
@@ -24,6 +25,8 @@ export const Index = () => {
         "text": `${message}`
       })
       setMessage('')
+      const { data } = await axios.get(`/posts/${id}/comments`)
+      dispatch(addComment(data))
     }
   }
   return (

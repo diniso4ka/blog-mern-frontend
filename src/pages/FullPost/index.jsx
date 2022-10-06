@@ -6,12 +6,16 @@ import { CommentsBlock } from "../../components/CommentsBlock";
 import { useParams } from 'react-router-dom';
 import axios from '../../utils/axios';
 import ReactMarkdown from 'react-markdown';
+import { useDispatch, useSelector } from 'react-redux';
+import { addComment } from '../../redux/slices/postsSlice/postsSlice';
 
 export const FullPost = () => {
   const { id } = useParams()
+  const dispatch = useDispatch()
   const [data, setData] = React.useState()
   const [isLoading, setIsLoading] = React.useState(true)
   const [comments, setComments] = React.useState([])
+  const { comms } = useSelector(state => state.posts.comments)
 
   const fetchData = async () => {
     try {
@@ -19,8 +23,8 @@ export const FullPost = () => {
       const com = await axios.get(`/posts/${id}/comments`)
       setComments(com.data)
       setData(res.data)
+      dispatch(addComment(comments))
       setIsLoading(false)
-      console.log(comments)
     } catch (err) {
       console.log(err)
       alert('Ошибка при получении статьи')
@@ -29,7 +33,7 @@ export const FullPost = () => {
 
   React.useEffect(() => {
     fetchData()
-  }, [])
+  }, [comms])
 
   if (isLoading) {
     return <Post isLoading={isLoading} />
