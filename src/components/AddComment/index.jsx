@@ -12,23 +12,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectIsAuth } from '../../redux/slices/authSlice/authSlice';
 import { addComment } from '../../redux/slices/postsSlice/postsSlice';
 
-export const Index = () => {
+export const Index = ({ sendMessage }) => {
   const isAuth = useSelector(selectIsAuth)
   const token = window.localStorage.getItem('token')
   const userData = useSelector(state => state.auth.data)
   const dispatch = useDispatch()
   const { id } = useParams()
   const [message, setMessage] = React.useState('')
-  const sendMessage = async () => {
-    if (message) {
-      await axios.post(`/posts/${id}/comments`, {
-        "text": `${message}`
-      })
-      setMessage('')
-      const { data } = await axios.get(`/posts/${id}/comments`)
-      dispatch(addComment(data))
-    }
+  const onClickSend = () => {
+    sendMessage(message)
+    setMessage('')
   }
+
   return (
     <>
       <div className={styles.root}>
@@ -49,7 +44,7 @@ export const Index = () => {
               console.log(message)
             }}
           />
-          <Button disabled={!Boolean(token || isAuth)} onClick={sendMessage} variant="contained">Отправить</Button>
+          <Button disabled={!Boolean(token || isAuth)} onClick={onClickSend} variant="contained">Отправить</Button>
         </div>
       </div>
     </>

@@ -15,7 +15,7 @@ export const FullPost = () => {
   const [data, setData] = React.useState()
   const [isLoading, setIsLoading] = React.useState(true)
   const [comments, setComments] = React.useState([])
-  const { comms } = useSelector(state => state.posts.comments)
+  const [rerender, setRerender] = React.useState(true)
 
   const fetchData = async () => {
     try {
@@ -31,9 +31,20 @@ export const FullPost = () => {
     }
   }
 
+  const sendMessage = async (message) => {
+    if (message) {
+      await axios.post(`/posts/${id}/comments`, {
+        "text": `${message}`
+      })
+      const { data } = await axios.get(`/posts/${id}/comments`)
+      dispatch(addComment(data))
+      setRerender(!rerender)
+    }
+  }
+
   React.useEffect(() => {
     fetchData()
-  }, [])
+  }, [rerender])
 
   if (isLoading) {
     return <Post isLoading={isLoading} />
@@ -61,7 +72,7 @@ export const FullPost = () => {
         items={comments.filter((el) => id === el.postId)}
         isLoading={false}
       >
-        <Index />
+        <Index sendMessage={sendMessage} />
       </CommentsBlock>
     </>
   );
