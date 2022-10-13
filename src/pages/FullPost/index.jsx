@@ -33,7 +33,7 @@ export const FullPost = () => {
 
   React.useEffect(() => {
     fetchData()
-  }, [comments])
+  }, [])
 
   if (isLoading) {
     return <Post isLoading={isLoading} />
