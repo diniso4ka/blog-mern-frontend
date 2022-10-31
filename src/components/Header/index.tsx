@@ -1,25 +1,23 @@
-import React from 'react';
-import Button from '@mui/material/Button';
+import React from "react";
+import Button from "@mui/material/Button";
 
-import styles from './Header.module.scss';
-import Container from '@mui/material/Container';
+import styles from "./Header.module.scss";
+import Container from "@mui/material/Container";
 
+import { Link, useNavigate } from "react-router-dom";
+import { selectIsAuth, logout } from "../../redux/slices/authSlice/authSlice";
+import * as ROUTES from "../../utils/consts";
+import { useAppDispatch, useAppSelector } from "../../redux/types";
 
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectIsAuth, logout } from '../../redux/slices/authSlice/authSlice';
-import * as ROUTES from '../../utils/consts';
-
-
-export const Header = () => {
-  const navigate = useNavigate()
-  const isAuth = useSelector(selectIsAuth)
-  const dispatch = useDispatch()
+export const Header: React.FC = () => {
+  const navigate = useNavigate();
+  const isAuth = useAppSelector(selectIsAuth);
+  const dispatch = useAppDispatch();
   const onClickLogout = () => {
-    if (window.confirm('Вы действительно хотите выйти?')) {
-      dispatch(logout())
-      navigate(ROUTES.HOME_ROUTE)
-      window.localStorage.removeItem('token')
+    if (window.confirm("Вы действительно хотите выйти?")) {
+      dispatch(logout());
+      navigate(ROUTES.HOME_ROUTE);
+      window.localStorage.removeItem("token");
     }
   };
 
@@ -36,7 +34,11 @@ export const Header = () => {
                 <Link to={ROUTES.ADDPOST_ROUTE}>
                   <Button variant="contained">Написать статью</Button>
                 </Link>
-                <Button onClick={onClickLogout} variant="contained" color="error">
+                <Button
+                  onClick={onClickLogout}
+                  variant="contained"
+                  color="error"
+                >
                   Выйти
                 </Button>
               </>

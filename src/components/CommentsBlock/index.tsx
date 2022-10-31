@@ -8,12 +8,19 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import Skeleton from "@mui/material/Skeleton";
+import { IComments } from "../../redux/slices/postsSlice/types";
 
+interface CommentsBlockPropsTypes {
+  isLoading: boolean;
+  children: React.ReactNode;
+  items: IComments[];
+}
 
-export const CommentsBlock = ({ items, children, isLoading = true }) => {
-
-
-
+export const CommentsBlock: React.FC<CommentsBlockPropsTypes> = ({
+  items,
+  children,
+  isLoading = true,
+}) => {
   return (
     <SideBlock title="Комментарии">
       <List>

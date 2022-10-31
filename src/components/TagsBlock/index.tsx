@@ -9,10 +9,17 @@ import ListItemText from "@mui/material/ListItemText";
 import Skeleton from "@mui/material/Skeleton";
 
 import { SideBlock } from "../SideBlock";
+import { Tags } from "../../redux/slices/postsSlice/types";
 
-import { Link } from 'react-router-dom';
+interface TagsBlockProps {
+  items: Tags[];
+  isLoading: boolean;
+}
 
-export const TagsBlock = ({ items, isLoading = true }) => {
+export const TagsBlock: React.FC<TagsBlockProps> = ({
+  items,
+  isLoading = true,
+}) => {
   return (
     <SideBlock title="Тэги">
       <List>
